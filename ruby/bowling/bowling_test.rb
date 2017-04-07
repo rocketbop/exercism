@@ -45,7 +45,7 @@ class BowlingTest < Minitest::Test
   end
 
   def test_a_spare_in_the_last_frame_gets_a_one_roll_bonus_that_is_counted_once
-    skip
+    # skip
     roll([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 3, 7])
     assert_equal 17, @game.score
   end

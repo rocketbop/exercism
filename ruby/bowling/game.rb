@@ -4,10 +4,28 @@ class Game
   def initialize
     @score = 0
     @recent_rolls = []
+    @frame_count = 1
+    @frame_throw_count = 0
   end
 
 
   def roll(pin)
+    if @frame_count == 12
+      return
+    end
+    if @frame_count == 11
+      @score += pin
+      @frame_count == 12
+      return
+    end
+    @frame_throw_count += 1
+    if pin == 10
+      @frame_count += 1
+      @frame_throw_count = 0
+    elsif @frame_throw_count == 2
+      @frame_count += 1
+      @frame_throw_count = 0
+    end
     @score += pin
     @recent_rolls.push(pin)
     if @recent_rolls.size == 3
@@ -20,12 +38,16 @@ class Game
   private
 
   def add_outstanding
-    calculate_strike if had_strike?
-    calculate_spare if had_spare?
+    if had_strike?
+      calculate_strike
+    end
+    if had_spare?
+      calculate_spare
+    end  
   end
 
   def had_strike?
-    @recent_rolls[0] == 10
+    second_last_roll == 10
   end
 
   def had_spare?
