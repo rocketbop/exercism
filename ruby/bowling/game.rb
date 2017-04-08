@@ -1,5 +1,6 @@
-# Calculate the score for a game of bowling
 require 'pry'
+
+# Calculate the score for a game of bowling
 class Game
   attr_accessor :score
   def initialize
@@ -12,10 +13,9 @@ class Game
 
   def roll(pin)
     update_frame(pin)
-    puts @doubles
     update_score(pin)
     update_doubles(pin)
-    end_frame if is_strike?(pin) || is_spare?(pin) || is_open?(pin)
+    end_frame if strike?(pin) || spare?(pin) || open?(pin)
   end
 
   private
@@ -33,8 +33,8 @@ class Game
 
   def update_doubles(pin)
     return if @frame == 10
-    @doubles += 2 if is_strike?(pin)
-    @doubles += 1 if is_spare?(pin)
+    @doubles += 2 if strike?(pin)
+    @doubles += 1 if spare?(pin)
   end
 
   def end_frame
@@ -44,15 +44,19 @@ class Game
     @frame += 1
   end
 
-  def is_strike?(pin)
+  def strike?(pin)
     pin == 10
   end
 
-  def is_spare?(pin)
-    (@current_frame.size == 2) && (pin + @current_frame[0] == 10)
+  def spare?(pin)
+    last_frame_throw && (pin + @current_frame[0] == 10)
   end
 
-  def is_open?(pin)
-    (@current_frame.size == 2) && (pin + @current_frame[0] < 10)
+  def open?(pin)
+    last_frame_throw && (pin + @current_frame[0] < 10)
+  end
+
+  def last_frame_throw
+    @current_frame.size == 2
   end
 end
