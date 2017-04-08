@@ -12,6 +12,7 @@ class Game
 
   def roll(pin)
     update_frame(pin)
+    puts @doubles
     update_score(pin)
     update_doubles(pin)
     end_frame if is_strike?(pin) || is_spare?(pin) || is_open?(pin)
@@ -31,6 +32,7 @@ class Game
   end
 
   def update_doubles(pin)
+    return if @frame == 10
     @doubles += 2 if is_strike?(pin)
     @doubles += 1 if is_spare?(pin)
   end

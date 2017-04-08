@@ -15,37 +15,37 @@ class BowlingTest < Minitest::Test
   end
 
   def test_should_be_able_to_score_a_game_with_all_zeros
-    # skip
+    skip
     roll([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     assert_equal 0, @game.score
   end
 
   def test_should_be_able_to_score_a_game_with_no_strikes_or_spares
-    # skip
+    skip
     roll([3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6])
     assert_equal 90, @game.score
   end
 
   def test_a_spare_followed_by_zeros_is_worth_ten_points
-    # skip
+    skip
     roll([6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     assert_equal 10, @game.score
   end
 
   def test_points_scored_in_the_roll_after_a_spare_are_counted_twice
-    # skip
+    skip
     roll([6, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     assert_equal 16, @game.score
   end
 
   def test_consecutive_spares_each_get_a_one_roll_bonus
-    # skip
+    skip
     roll([5, 5, 3, 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     assert_equal 31, @game.score
   end
 
   def test_a_spare_in_the_last_frame_gets_a_one_roll_bonus_that_is_counted_once
-    skip
+    # skip
     roll([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 3, 7])
     assert_equal 17, @game.score
   end
