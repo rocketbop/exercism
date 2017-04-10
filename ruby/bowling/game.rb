@@ -6,15 +6,19 @@ class Game
   def initialize
     @score = 0
     @doubles = 0
+    @triples = 0
     @frame = 1
     @frames = []
     @current_frame = []
   end
 
   def roll(pin)
+    puts "Frame " + @frame.to_s 
     update_frame(pin)
     update_score(pin)
+    puts @score
     update_doubles(pin)
+    update_triples(pin)
     end_frame if strike?(pin) || spare?(pin) || open?(pin)
   end
 
@@ -25,16 +29,27 @@ class Game
   end
 
   def update_score(pin)
-    @score += pin
-    return unless @doubles > 0
-    @score += pin
-    @doubles -= 1
+    if !@triples.zero?
+      @score += (pin * 3)
+      @triples -= 1
+    elsif !@doubles.zero?
+      @score += (pin * 2)
+      @doubles -= 1
+    else
+      @score += pin
+    end
   end
 
   def update_doubles(pin)
     return if @frame == 10
     @doubles += 2 if strike?(pin)
     @doubles += 1 if spare?(pin)
+  end
+
+  def update_triples(pin)
+    return unless strike?(pin) && !@frames.empty? && @frames[@frames.size - 1][0] == 10
+    @triples += 1
+    @doubles -= 1
   end
 
   def end_frame
