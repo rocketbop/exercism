@@ -29,6 +29,9 @@ class Game
   end
 
   def update_score(pin)
+    if @frame > 9
+      @doubles = @triples = 0
+    end
     if !@triples.zero?
       @score += (pin * 3)
       @triples -= 1
@@ -41,7 +44,6 @@ class Game
   end
 
   def update_doubles(pin)
-    return if @frame == 10
     @doubles += 2 if strike?(pin)
     @doubles += 1 if spare?(pin)
   end
