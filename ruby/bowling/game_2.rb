@@ -7,7 +7,7 @@ class Game
   end
 
   def roll(pin)
-    raise BowlingError.new("BowlingError") if pin < 0
+    raise BowlingError.new("BowlingError") if invalid?(pin)
     current_frame.update_throw(pin)
     return unless current_frame.strike? || current_frame.complete?
     @frames.push(Frame.new)
@@ -28,6 +28,12 @@ class Game
   end
 
   private
+
+  def invalid?(pin)
+    if pin < 0 || pin > 10
+      true
+    end
+  end
 
   def current_frame
     @frames.last
