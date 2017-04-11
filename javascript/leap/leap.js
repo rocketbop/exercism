@@ -12,7 +12,6 @@ Year.prototype.isLeap = function() {
   switch (0) {
     case this.date % 400:
       return true
-      break;
     case this.date % 100:
       return false;
     case this.date % 4:
