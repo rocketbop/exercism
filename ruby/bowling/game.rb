@@ -25,6 +25,10 @@ class Game
       raise BowlingError.new("BowlingError")
     elsif @frames.length > 10 && @frames[9].score < 10 && !@frames[10].bonus_frame && !@frames[10].throws.empty?
       raise BowlingError.new("BowlingError")
+    elsif @frames[9].score == 10 && @frames[10].throws.empty?
+      raise BowlingError.new("BowlingError")
+    # elsif @frames[9].score == 10 && @frames[10].throws.length < 2
+    #   raise BowlingError.new("BowlingError")
     end
     total = 0
     @frames.each_with_index do |frame, index|
@@ -55,7 +59,11 @@ class Game
     total += if @frames[strike_index + 1].throws.size == 2
                @frames[strike_index + 1].throws[1]
              else
-               @frames[strike_index + 2].throws[0]
+               begin
+                 @frames[strike_index + 2].throws[0]
+               rescue
+                 raise BowlingError.new("BowlingError")
+               end  
              end
     total
   end
@@ -63,4 +71,8 @@ class Game
   def game_over?
     @frames.length >= 10 && @frames[9].score < 10 && current_frame.complete?
   end
+end
+
+module BookKeeping
+  VERSION = 3
 end
