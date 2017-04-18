@@ -1,13 +1,15 @@
 class Pangram
   def self.pangram?(phrase)
-    alphabet = ('A'..'Z').to_a
-    phrase.upcase.each_char do |char|
-      alphabet.delete_if { |letter| letter == char }
-      return true if alphabet.empty?
+    phrase.upcase!
+    included = 0
+    ('A'..'Z').to_a.each do |letter|
+      included += 1 if phrase.include?(letter)
+      return true if included == 26
     end
-    alphabet.empty?
+    included == 26
   end
 end
+
 
 module BookKeeping
   VERSION = 4
