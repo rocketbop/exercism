@@ -12,8 +12,8 @@ class Game
     @game_started ||= true
     current_frame.update_throw(pin)
     raise BowlingError.new("BowlingError") if invalid?(pin)
-    return unless current_frame.complete? && !game_over?
-    if @frames.size > 9
+    return unless current_frame.complete?
+    if @frames.size > 9 && !game_over?
       @frames.push(Frame.new(true))
     else
       @frames.push(Frame.new)
@@ -23,8 +23,7 @@ class Game
   def score
     if !defined?(@game_started) || @frames.length < 10
       raise BowlingError.new("BowlingError")
-    elsif @frames.length > 10 && @frames[9].score < 10
-      # binding.pry
+    elsif @frames.length > 10 && @frames[9].score < 10 && !@frames[10].bonus_frame && !@frames[10].throws.empty?
       raise BowlingError.new("BowlingError")
     end
     total = 0

@@ -178,7 +178,7 @@ class BowlingTest < Minitest::Test
   end
 
   def test_a_game_with_more_than_ten_frames_can_not_be_scored
-    skip
+    # skip
     assert_raises Game::BowlingError do
       roll([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
       @game.score

@@ -1,5 +1,5 @@
 class Frame
-  attr_accessor :throws
+  attr_accessor :throws, :bonus_frame
 
   def initialize(bonus_frame = false)
     @throws = []
