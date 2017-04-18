@@ -3,6 +3,7 @@ require 'pry'
 class Squares
   def initialize(number)
     @number = number
+    @range = (1..@number).to_a
   end
 
   def square_of_sum
@@ -17,14 +18,16 @@ class Squares
     square_of_sum - sum_of_squares
   end
 
+  private
+
   def sums
     return 0 if @number.zero?
-    (1..@number).to_a.inject(:+)
+    @range.inject(:+)
   end
 
   def squares
     return [0] if @number.zero?
-    (1..@number).to_a.map { |item| item * item }
+    @range.map { |item| item * item }
   end
 end
 
