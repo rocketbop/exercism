@@ -1,79 +1,67 @@
-require 'pry'
+require_relative "frame"
+require_relative "bowling_error"
 
-# Calculate the score for a game of bowling
+#  Game class rolls and scores
 class Game
-  attr_accessor :score
   def initialize
-    @score = 0
-    @doubles = 0
-    @triples = 0
-    @frame = 1
-    @frames = []
-    @current_frame = []
+    @frames = [Frame.new]
   end
 
   def roll(pin)
-    puts "Frame " + @frame.to_s 
-    update_frame(pin)
-    update_score(pin)
-    puts @score
-    update_doubles(pin)
-    update_triples(pin)
-    end_frame if strike?(pin) || spare?(pin) || open?(pin)
+    return unless pin.is_a?(Integer)
+    @game_started ||= true
+    current_frame.update_throw(pin)
+    raise BowlingError.new("BowlingError") if invalid?(pin)
+    return unless current_frame.complete? && !game_over?
+    if @frames.size > 9
+      @frames.push(Frame.new(true))
+    else
+      @frames.push(Frame.new)
+    end
+  end
+
+  def score
+    if !defined?(@game_started) || @frames.length < 10
+      raise BowlingError.new("BowlingError")
+    elsif @frames.length > 10 && @frames[9].score < 10
+      # binding.pry
+      raise BowlingError.new("BowlingError")
+    end
+    total = 0
+    @frames.each_with_index do |frame, index|
+      break if index > 9
+      total += frame.score
+      if frame.complete? && frame.spare?
+        total += @frames[index + 1].throws.first
+      elsif frame.strike?
+        total += score_strike(index)
+      end
+    end
+    total
   end
 
   private
 
-  def update_frame(pin)
-    @current_frame.push(pin)
+  def invalid?(pin)
+    pin < 0 || pin > 10
   end
 
-  def update_score(pin)
-    if @frame > 9
-      @doubles = @triples = 0
-    end
-    if !@triples.zero?
-      @score += (pin * 3)
-      @triples -= 1
-    elsif !@doubles.zero?
-      @score += (pin * 2)
-      @doubles -= 1
-    else
-      @score += pin
-    end
+  def current_frame
+    @frames.last
   end
 
-  def update_doubles(pin)
-    @doubles += 2 if strike?(pin)
-    @doubles += 1 if spare?(pin)
+  def score_strike(strike_index)
+    total = 0
+    total += @frames[strike_index + 1].throws[0]
+    total += if @frames[strike_index + 1].throws.size == 2
+               @frames[strike_index + 1].throws[1]
+             else
+               @frames[strike_index + 2].throws[0]
+             end
+    total
   end
 
-  def update_triples(pin)
-    return unless strike?(pin) && !@frames.empty? && @frames[@frames.size - 1][0] == 10
-    @triples += 1
-    @doubles -= 1
-  end
-
-  def end_frame
-    @frames.push(@current_frame)
-    @current_frame = []
-    return unless @frame < 11
-    @frame += 1
-  end
-
-  def strike?(pin)
-    pin == 10
-  end
-
-  def spare?(pin)
-    last_frame_throw && (pin + @current_frame[0] == 10)
-  end
-
-  def open?(pin)
-    last_frame_throw && (pin + @current_frame[0] < 10)
-  end
-
-  def last_frame_throw
-    @current_frame.size == 2
+  def game_over?
+    @frames.length >= 10 && @frames[9].score < 10 && current_frame.complete?
   end
 end
