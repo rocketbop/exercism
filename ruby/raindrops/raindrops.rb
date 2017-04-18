@@ -1,14 +1,15 @@
 class Raindrops
-  def self.convert(number)
-    result = ''
-    result << "Pling" if factor_of?(factor: number, product: 3)
-    result << "Plang" if factor_of?(factor: number, product: 5)
-    result << "Plong" if factor_of?(factor: number, product: 7)
-    result.empty? ? number.to_s : result
-  end
+  RAINDROPS = { 3 => "Pling", 5 => "Plang", 7 => "Plong" }
 
-  def self.factor_of?(factor:, product:)
-    (factor % product).zero?
+  def self.convert(target)
+    result = ''
+    RAINDROPS.each do |factor, sound|
+      result << sound if (target % factor).zero?
+    end
+    result.empty? ? target.to_s : result
   end
 end
 
+module BookKeeping
+  VERSION = 3
+end
