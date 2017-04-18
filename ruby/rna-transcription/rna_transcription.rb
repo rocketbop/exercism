@@ -1,18 +1,16 @@
 require "pry"
 
 class Complement
-  def self.map
-    {
-      "G" => "C",
-      "C" => "G",
-      "T" => "A",
-      "A" => "U"
-    }
-  end
+  DNA_TO_RNA = {
+    "G" => "C",
+    "C" => "G",
+    "T" => "A",
+    "A" => "U"
+  }
 
   def self.of_dna(sequence)
     sequence.each_char.map do |char|
-      compliment = map[char]
+      compliment = DNA_TO_RNA[char]
       return "" if compliment.nil?
       compliment
     end.join
