@@ -11,7 +11,7 @@ class Squares
   end
 
   def sum_of_squares
-    squares.inject(:+)
+    squares.inject(0, :+)
   end
 
   def difference
@@ -21,12 +21,10 @@ class Squares
   private
 
   def sums
-    return 0 if @number.zero?
-    @range.inject(:+)
+    @range.inject(0, :+)
   end
 
   def squares
-    return [0] if @number.zero?
     @range.map { |item| item * item }
   end
 end
