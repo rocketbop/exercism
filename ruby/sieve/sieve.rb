@@ -1,6 +1,5 @@
-require 'pry'
 class Sieve
-  attr_accessor :primes
+  attr_reader :primes
   def initialize(limit)
     @limit = limit
     @range = (2..limit).to_a
